@@ -24,6 +24,7 @@ def bisection( fun, MIN, MAX, eps=1e-5 ):
     # the magnitude of the gradient and distance from the optimum
     ###############################
     # TODO: suboptimality = ???
+    suboptimality=np.abs(gradient*(MAX-MIN))
     ###############################
 
     if suboptimality <= eps:
@@ -32,10 +33,14 @@ def bisection( fun, MIN, MAX, eps=1e-5 ):
     if gradient > 0:
       ###############################
       # TODO: Updating the interval #
+      MAX = MID
+      MIN = MIN
       ###############################
     else:
       ###############################
       # TODO: Updating the interval #
+      MAX = MAX
+      MIN = MID
       ###############################
 
   print( 'Number of Iterations: %d' %counter )
@@ -56,12 +61,30 @@ def weird_func( x ):
 
   return (gradient,value)
 
+
 ###############################################################
 
+
+
+
+def one_b( x ):
+
+  #  f(x) = x2 − 3x + 4
+  value = pow(x, 2)  - 3 * x + 4
+
+  # f' (x) = x2 − 3x + 4
+  gradient = 2*x - 3
+
+  return (gradient,value)
+
+
 # You may need to define other functions below
+print(bisection(one_b,-5,5))
 
 
+print(bisection(weird_func,-5,5,10**(-15)))
 
+print(bisection(weird_func,-700,700,10**(-15)))
 
 
 
