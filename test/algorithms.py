@@ -122,9 +122,9 @@ def backtracking(func, x, direction, T, alpha=0.4, beta=0.9, maximum_iterations=
         t = 1
         iterations = 0
         while True:
+            # TO DO ################################check Armijo's
 
-            #if (TODO: Check Armijo's Condition):
-            if(func(x+t*direction,1)[0] <= value + alpha*t*derivative):
+            if func(x+t*direction,1)[0] < value+alpha*t*derivative:
                 break
             t *= beta
 
@@ -188,11 +188,12 @@ def gradient_descent(func, initial_x, err=1e-5, maximum_iterations=65536,linesea
         runtimes.append(time.time() - start_time)
         xs.append(x.copy())
 
-        #if (TODO: Check Termination Criterion):
-        if(np.linalg.norm(gradient)**2<= err):
+        #if (TODO: Check Termination Criterion): ###################
+        # if np.dot(np.transpose(gradient),gradient)<err:
+        if np.linalg.norm(gradient)**2<= err:
             break
 
-        #direction =  TODO: Search Direction
+        #direction =  TODO: Search Direction #######################
         direction = -gradient
 
         t = linesearch(func, x, direction, iterations, *linesearch_args)
@@ -205,63 +206,6 @@ def gradient_descent(func, initial_x, err=1e-5, maximum_iterations=65536,linesea
             break
 
     return (x, values, runtimes, xs)
-
-
-
-
-def gradient_descent_exact_linesearch(func, initial_x, err=1e-5, maximum_iterations=65536):
-    """
-    Gradient Descent Using different stepsize choices: backtracking or bisection or polynomially decay or fixed stepsize
-    func:               the function to optimize It is called as "value, gradient = func( x, 1 )
-    initial_x:          the starting point
-    err:                the stopping criteria for the squared norm of the gradient
-    maximum_iterations: the maximum allowed number of iterations
-    linesearch:         the linesearch routine, possible choice are: bisection, backtracking, poly.
-    *linesearch_args:   the extra arguments of linesearch routine, for bisection, these are: eps and
-                        maximum_iterations, for backtracking, these are  alpha, beta,
-                        maximum_iterations, for poly, these are coefficient, exponent. For fixed stepsize, just
-                        set exponent=0, and coefficient=stepsize.
-    """
-
-    if err <= 0:
-        raise ValueError("Err must be positive")
-    x = np.asarray(initial_x.copy())
-
-    # initialization the list that respectively contains objective vales, runtimes, x's at each iteration
-    values = []
-    runtimes = []
-    xs = []
-    start_time = time.time()
-    iterations = 1
-
-    # gradient updates
-    while True:
-
-        value, gradient,step_length = func(x, 1)
-        value = np.double(value)
-        gradient = np.asarray(gradient)
-
-        # updating the logs
-        values.append(value)
-        runtimes.append(time.time() - start_time)
-        xs.append(x.copy())
-
-        #if (TODO: Check Termination Criterion):
-        if(np.linalg.norm(gradient)**2<= err):
-            break
-
-        #direction =  TODO: Search Direction
-        direction = -gradient
-        x += step_length.item() * direction
-
-        iterations += 1
-        if iterations >= maximum_iterations:
-            print("Too many iterations")
-            break
-
-    return (x, values, runtimes, xs)
-
-
 
 
 
