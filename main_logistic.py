@@ -42,6 +42,9 @@ w, values, runtimes, newton_ws = alg.newton( func, initial_w, eps, maximum_itera
 minimum_f = min( values)
 
 # Run algorithms and draw plots
+
+# values-minimum_f
+
 w, values, runtimes, gd_ws = alg.gradient_descent( func, initial_w, eps, maximum_iterations, alg.backtracking, alpha, beta )
 plt.semilogy(values-minimum_f, linewidth=2, color='r', label='GD' )
 
@@ -49,12 +52,12 @@ w, values, runtimes, cg_ws = alg.cg( func, initial_w, eps, maximum_iterations, a
 plt.semilogy(values-minimum_f, linewidth=2, color='g', label='CG' )
 
 w, values, runtimes, bfgs_ws = alg.bfgs( func, initial_w, initial_inverse_hessian, eps, maximum_iterations, alg.backtracking, alpha, beta )
-plt.semilogy(values-minimum_f, linewidth=2, color='b', label='BFGS')
+plt.semilogy(values-minimum_f,linewidth=2, color='b', label='BFGS')
 
 w, values, runtimes, newton_ws = alg.newton( func, initial_w, eps, maximum_iterations, alg.backtracking, alpha, beta )
-plt.semilogy(values-minimum_f, linewidth=2, color='m', label='Newton')
+plt.semilogy(values-minimum_f,linewidth=2, color='m', label='Newton')
 
 plt.xlabel('iterations')
 plt.ylabel('suboptimality')
 plt.legend()
-plt.show()
+plt.savefig('logistic_large.jpg')

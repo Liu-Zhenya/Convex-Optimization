@@ -38,4 +38,4 @@ x, values, runtimes, bfgs_xs = alg.bfgs( func, initial_x, initial_inverse_hessia
 x, values, runtimes, newton_xs = alg.newton( func, initial_x, eps, maximum_iterations, alg.bisection )
 
 # Draw contour plots
-hw4.draw_contour( func, gd_xs, cg_xs, bfgs_xs, newton_xs, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1) )
+hw4.draw_contour_new( func, gd_xs, cg_xs, bfgs_xs, newton_xs, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1),title='1.2' )

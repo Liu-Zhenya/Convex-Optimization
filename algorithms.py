@@ -124,8 +124,11 @@ def backtracking(func, x, direction, k, alpha=0.4, beta=0.9, maximum_iterations=
         while True:
 
             # if (TODO: TERMINATION CRITERION): break
+            if func( x + t * direction, 0 ) <= ( value + alpha * t * derivative):
+                break
 
             # t = TODO: BACKTRACKING LINE SEARCH
+            t *= beta 
 
             iterations += 1
             if iterations >= maximum_iterations:
@@ -185,8 +188,10 @@ def gradient_descent( func, initial_x, eps=1e-5, maximum_iterations=65536, lines
         xs.append( x.copy() )
 
         # if ( TODO: TERMINATION CRITERION ): break
-
+        if np.vdot( gradient, gradient ) <= eps:        
+            break  
         # direction = TODO: GRADIENT DESCENT UPDATE Direction
+        direction = - gradient
 
         t = linesearch(func, x, direction, iterations, *linesearch_args)
 
@@ -236,9 +241,9 @@ def newton( func, initial_x, eps=1e-5, maximum_iterations=65536, linesearch=bise
         xs.append( x.copy() )
 
         ### TODO: Compute the Newton update direction
-
+        direction = -np.linalg.inv(hessian)@gradient
         ### TODO: Compute the Newton decrement
-
+        newton_decrement = np.sqrt(gradient.T @ np.linalg.inv(hessian) @ gradient)
         if newton_decrement <= np.sqrt(eps):
             break
 
@@ -278,6 +283,7 @@ def cg(func, initial_x, eps=1e-5, maximum_iterations=65536, linesearch=bisection
     m = len( initial_x )
     iterations = 0
     direction = np.asmatrix( np.zeros( initial_x.shape ) )
+    old_gradient=1
 
     # conjugate gradient updates
     while True:
@@ -292,15 +298,18 @@ def cg(func, initial_x, eps=1e-5, maximum_iterations=65536, linesearch=bisection
         xs.append( x.copy() )
 
         # if ( TODO: TERMINATION CRITERION ): break
-
+        if(np.linalg.norm(gradient)<=eps):
+            break
         # beta = TODO: UPDATE BETA
 
+        beta = np.vdot(gradient,gradient)/np.vdot(old_gradient,old_gradient)
         # reset after #(dimensions) iterations
         if iterations % m == 0:
             beta = 0
 
         # direction = TODO: FLETCHER-REEVES CONJUGATE GRADIENT UPDATE
 
+        direction = -gradient + beta*direction
         t = linesearch(func, x, direction, iterations, *linesearch_args)
 
         x += t * direction
